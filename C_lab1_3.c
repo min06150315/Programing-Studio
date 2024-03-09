@@ -9,6 +9,7 @@ int findRoom(int persons[5]); // 5개의 호실 중 빈 베드가 있는 방을 찾아낸다. (리
 void printReport(char mn[10][20], int mr[10], int mc, char wn[10][20], int wr[10], int wc); // 배정 결과를 출력한다.
 
 int main(){
+	
 	char mnames[10][20]; // 남학생명단(최대 10명)
 	int mroom[10];		// 남학생명단별 호실 배정 목록
 	char wnames[10][20]; // 여학생명단(최대 10명)
