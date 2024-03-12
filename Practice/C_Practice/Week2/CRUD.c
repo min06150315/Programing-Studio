@@ -1,28 +1,21 @@
-//  1. 변수의 사용범위
-//  2. 구조체 생성, typedef 사용
-//  3. 함수 생성하는 방법
-//  4. Call by value, Call by reference
-//  5. 일반 변수와 포인터 변수의 차이점
-
 #include <stdio.h>
 
 typedef struct {
     char name[20];
-    int kor;
-    int eng;
-    int math;
+    int number;
+    int score[3];
 } Score;
 
 int selectMenu()
 {
     int menu;
-    printf("\n*** 점수계산기 ***\n");
-    printf("1. 조회\n");
-    printf("2. 추가\n");
-    printf("3. 수정\n");
-    printf("4. 삭제\n");
-    printf("0. 종료\n\n");
-    printf("=> 원하는 메뉴는? ");
+    printf("\n*** Score Menu ***\n");
+    printf("1. Read\n");
+    printf("2. Create\n");
+    printf("3. Update\n");
+    printf("4. Delete\n");
+    printf("0. End\n");
+    printf("=> Menu? ");
     scanf("%d", &menu);
 
     return menu;
@@ -30,60 +23,75 @@ int selectMenu()
 
 int addScore(Score *s)
 {
-    printf("이름은? ");
+    printf("Number? ");
+    scanf("%d", &s->number);
+
+    printf("Name? ");
     scanf("%s", s->name);
 
-    printf("국어는? ");
-    scanf("%d", &s->kor);
+    printf("Korean Score? ");
+    scanf("%d", &s->score[0]);
 
-    printf("영어는? ");
-    scanf("%d", &s->eng);
+    printf("English Score? ");
+    scanf("%d", &s->score[1]);
 
-    printf("수학은? ");
-    scanf("%d", &s->math);
+    printf("Math Score? ");
+    scanf("%d", &s->score[2]);
 
     return 1;
 }
 
 void readScore(Score s)
 {
-    int sum = s.kor + s.eng + s.math;
-    double avg = sum / 3.0;
+    int sum = 0;
+    double avg = 0;
 
-    printf("%8s %4d %4d %4d %5d %5.1f\n", s.name, s.kor, s.eng, s.math, sum, avg);
+    if (s.score[0] >= 0 && s.score[1] >= 0 && s.score[2] >= 0){
+        sum = s.score[0] + s.score[1] + s.score[2];
+        avg = (double)sum / 3.0;
+    }else {
+        sum = -1;
+        avg = -1;
+    }
+    printf("%10s | %8s | %4s | %4s | %4s | %4s | %5s\n", "Number", "Name", "Kor", "Eng", "Math", "Sum", "Avg");
+    printf("%10d | %8s | %4d | %4d | %4d | %4d | %5d\n", s.number, s.name, s.score[0], s.score[1], s.score[2], sum, avg);
 }
 
 int updateScore(Score *s)
 {
-    printf("이름은? ");
+    printf("Update Number?: ");
+    scanf("%d", &s->number);
+
+    printf("Update Name? ");
     scanf("%s", s->name);
 
-    printf("국어는? ");
-    scanf("%d", &s->kor);
+    printf("Update Korean Score? ");
+    scanf("%d", &s->score[0]);
 
-    printf("영어는? ");
-    scanf("%d", &s->eng);
+    printf("Update Englsh Score? ");
+    scanf("%d", &s->score[1]);
 
-    printf("수학은? ");
-    scanf("%d", &s->math);
+    printf("Update Math Score? ");
+    scanf("%d", &s->score[2]);
     
-    printf("=> 수정성공!\n");
+    printf("=> Succsess Update\n");
     return 1;
 }
 
 int deleteScore(Score *s)
 {
-    s->kor = -1;
-    s->eng = -1;
-    s->math = -1;
+    s->score[0] = -1;
+    s->score[1] = -1;
+    s->score[2] = -1;
 
+    printf("Success Delete\n");
     return 1;
 }
 
 int main(void)
 {
     Score s;
-    int count = 0, menu;
+    int count, menu;
 
     while(1){
         menu = selectMenu();
@@ -92,10 +100,8 @@ int main(void)
         if (menu == 1 || menu == 3 || menu == 4)
             if (count == 0)
                 continue;
-        if (menu == 1){
-            printf("Name Kor Eng Math Sum Avg \n");
+        if (menu == 1)
             readScore(s);
-        }
         else if (menu == 2)
             addScore(&s);
         else if (menu == 3)
