@@ -29,7 +29,6 @@ void printMyClasses(int my[], int msize, struct st_class* c[], int csize); // Pr
 void saveMyClass(int my[], int msize, struct st_class* c[], int csize); // Save my classes
 void saveAllClasses(struct st_class* c[], int csize); // Save all class list
 
-
 int main(void) {
 	int no;	// menu number 
 	struct st_class* classes[50]; // Class list (max. 50 classes)
