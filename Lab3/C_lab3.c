@@ -121,10 +121,57 @@ int addChannel(struct st_channel* c[], int size){
 
 void printStatistics(struct st_channel* c[], int size){
 	printf("> Statistics of Channels\n");
-
-
-
-
+    int count[5] = {0};
+    int sub_sum[5] = {0};
+    float sub_avg[5] = {0};
+    char top[5][30];
+    int top_people[5] = {0};
+    // compute subscriptions count, sum and average
+    //  check the top channel
+    for (int i = 0; i < size; i++){
+        if (c[i]->count < 1000){
+            count[0]++;
+            sub_sum[0] += c[i]->count;
+            if(c[i]->count > top_people[0]){
+                top_people[0] = c[i]->count;
+                strcpy(top[0], c[i]->name);
+            }
+        }else if (c[i]->count < 10000){
+            count[1]++;
+            sub_sum[1] += c[i]->count;
+            if(c[i]->count > top_people[1]){
+                top_people[1] = c[i]->count;
+                strcpy(top[1], c[i]->name);
+            }
+        }else if (c[i]->count < 100000){
+            count[2]++;
+            sub_sum[2] += c[i]->count;
+            if(c[i]->count > top_people[2]){
+                top_people[2] = c[i]->count;
+                strcpy(top[2], c[i]->name);
+            }
+        }else if (c[i]->count < 1000000){
+            count[3]++;
+            sub_sum[3] += c[i]->count;
+            if(c[i]->count > top_people[3]){
+                top_people[3] = c[i]->count;
+                strcpy(top[3], c[i]->name);
+            }
+        }else {
+            count[4]++;
+            sub_sum[4] += c[i]->count;
+            if(c[i]->count > top_people[4]){
+                top_people[4] = c[i]->count;
+                strcpy(top[4], c[i]->name);
+            }
+        }
+    }
+    
+    // print the result
+    for (int i = 0; i < 5; i++){
+        sub_avg[i] = (float)sub_sum[i] / count[i];
+        printf("%s : %d channels, Average %.1f, Top channel : %s (%d peoples)\n", LNAME[i], count[i], sub_avg[i], top[i], top_people[i]);
+    }
 }
 
 void pickupRandomChannels(struct st_channel* c[], int size){
