@@ -187,17 +187,57 @@ void pickupRandomChannels(struct st_channel* c[], int size){
 	printf("Random Channels\n");
 	for (int i = 0; i < count; i++){
 		r = rand() % size;
-		printf("[%d] %s (%s level, %d peoples)\n", r + 1, c[r]->name, LNAME[c[r]->level], c[r]->count);
+		printf("[%2d] %s (%s level, %d peoples)\n", r + 1, c[r]->name, LNAME[c[r]->level], c[r]->count);
 	}
 }
 void searchChannel(struct st_channel* c[], int size){
+	int menu;
+	int from, to;
+	char c_name[64];
+	int count = 0;
 	printf("> Search Channels\n");
+	// User input
 	printf("> Choose one (1:by peoples 2:by names) > ");
+	scanf("%d", &menu);
+	// Input system
+	while(1){
+		if (menu == 1){ // Searching by people
+			// User input
+			printf("> Enter the range of peoples (from ~ to) > ");
+			scanf("%d %d", &from, &to);
+			if (from > to){
+				printf("Wrong range!!");
+				exit(-1);
+			}
+			// Searching System
+			printf("> Result:\n");
+			for (int i = 0; i < size; i++){
+				if(c[i]->count > from && c[i]->count < to){
+					printf("[%2d] %-20s %10d peoples [%s] \n", i + 1, c[i]->name, c[i]->count,LNAME[c[i]->level]);
+					count++;
+				}
+			}
+			break;
+		}else if (menu == 2){ // Searcing by name
+			// User input
+			printf("> Enter a names > ");
+			scanf("%s", c_name);
 
-
-
-
-
+			count = 0;
+			// Searcing system
+			printf("> Result:\n");
+			for (int i = 0; i < size; i++){
+				if (strstr(c[i]->name, c_name) != NULL){
+					printf("[%2d] %-20s %10d peoples [%s] \n", i + 1, c[i]->name, c[i]->count,LNAME[c[i]->level]);
+					count++;
+				}
+			}
+			break;
+		}else {
+			printf("Error!! Retry to Choose!!\n");
+		}
+	}
+	printf("> %d channels are found.\n", count);
 }
 
 void updateChannel(struct st_channel* c[], int size){
