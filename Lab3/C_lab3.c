@@ -183,7 +183,7 @@ void pickupRandomChannels(struct st_channel* c[], int size){
 	printf("> How much channels you want to pick up? > ");
 	scanf("%d", &count);
 
-	// Print result
+	// Print random result
 	printf("Random Channels\n");
 	for (int i = 0; i < count; i++){
 		r = rand() % size;
@@ -205,6 +205,7 @@ void searchChannel(struct st_channel* c[], int size){
 			// User input
 			printf("> Enter the range of peoples (from ~ to) > ");
 			scanf("%d %d", &from, &to);
+			// Error check
 			if (from > to){
 				printf("Wrong range!!");
 				exit(-1);
@@ -279,7 +280,6 @@ void updateChannel(struct st_channel* c[], int size){
 		}
 		printf("> Channel info. is modified.\n");
 	}
-	
 }
 
 int deleteChannel(struct st_channel* c[], int size){
@@ -294,10 +294,12 @@ int deleteChannel(struct st_channel* c[], int size){
 		printf("> Channel Info.\n");
 		printf("[%2d] %-20s %10d peoples [%s] \n", no , c[no - 1]->name, c[no - 1]->count,LNAME[c[no - 1]->level]);
 		
+		// User input
 		printf("> Do you want to delete the channel? (1:Yes 0:No) > ");
 		scanf("%d", &yesno);
 		if (yesno == 1){
 			printf("> Channel is deleted.\n");
+			// change the result
 			strcpy(c[no - 1]->name, c[size - 1]->name);
 			c[no - 1]->count = c[size - 1]->count;
 			c[no - 1]->level = c[size - 1]->level;
@@ -316,11 +318,13 @@ void makeReport(struct st_channel* c[], int size){
 	printf("> All information of channels are saved into channels.txt\n");
 	printf("> Channel Statistics are saved into report.txt\n");
 
+	// Write at report.txt
+	//	Write channel information
 	fprintf(fp, "Channel List\n");
 	for (int i = 0; i < size; i++){
 		fprintf(fp, "[%2d] %-20s %10d peoples [%s] \n", i + 1, c[i]->name, c[i]->count, LNAME[c[i]->level]);
 	}
-
+	
 	// Reuse the printStatistics() function
 	fprintf(fp, "\nStatistics of Channels\n");
 	int count[5] = {0};
@@ -366,6 +370,7 @@ void makeReport(struct st_channel* c[], int size){
             }
         }
     }
+	// Write channel statistics
 	for (int i = 0; i < 5; i++){
 			sub_avg[i] = (float)sub_sum[i] / count[i];
 			fprintf(fp, "%s : %d channels, Average %.1f, Top channel : %s (%d peoples)\n", LNAME[i], count[i], sub_avg[i], top[i], top_people[i]);
