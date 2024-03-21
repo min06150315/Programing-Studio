@@ -126,6 +126,7 @@ void printStatistics(struct st_channel* c[], int size){
     float sub_avg[5] = {0};
     char top[5][30];
     int top_people[5] = {0};
+	
     // compute subscriptions count, sum and average
     //  check the top channel
     for (int i = 0; i < size; i++){
@@ -166,6 +167,7 @@ void printStatistics(struct st_channel* c[], int size){
             }
         }
     }
+
     // print the average and top channel
     for (int i = 0; i < 5; i++){
         sub_avg[i] = (float)sub_sum[i] / count[i];
@@ -207,11 +209,13 @@ void searchChannel(struct st_channel* c[], int size){
 			// User input
 			printf("> Enter the range of peoples (from ~ to) > ");
 			scanf("%d %d", &from, &to);
+
 			// Error check
 			if (from > to){
 				printf("Wrong range!!");
 				exit(-1);
 			}
+
 			// Searching System
 			printf("> Result:\n");
 			for (int i = 0; i < size; i++){
@@ -376,7 +380,7 @@ void makeReport(struct st_channel* c[], int size){
             }
         }
     }
-	
+
 	// Write channel statistics
 	for (int i = 0; i < 5; i++){
 			sub_avg[i] = (float)sub_sum[i] / count[i];
