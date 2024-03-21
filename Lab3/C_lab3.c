@@ -167,7 +167,7 @@ void printStatistics(struct st_channel* c[], int size){
         }
     }
     
-    // print the result
+    // print the average and top channel
     for (int i = 0; i < 5; i++){
         sub_avg[i] = (float)sub_sum[i] / count[i];
         printf("%s : %d channels, Average %.1f, Top channel : %s (%d peoples)\n", LNAME[i], count[i], sub_avg[i], top[i], top_people[i]);
@@ -175,12 +175,20 @@ void printStatistics(struct st_channel* c[], int size){
 }
 
 void pickupRandomChannels(struct st_channel* c[], int size){
+	int count;
+	int r;
+	srand(time(NULL));
 	printf("> Pick up Channels\n");
+	// User input
 	printf("> How much channels you want to pick up? > ");
+	scanf("%d", &count);
 
-
-
-
+	// Print result
+	printf("Random Channels\n");
+	for (int i = 0; i < count; i++){
+		r = rand() % size;
+		printf("[%d] %s (%s level, %d peoples)\n", r + 1, c[r]->name, LNAME[c[r]->level], c[r]->count);
+	}
 }
 void searchChannel(struct st_channel* c[], int size){
 	printf("> Search Channels\n");
