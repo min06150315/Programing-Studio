@@ -277,8 +277,9 @@ void updateChannel(struct st_channel* c[], int size){
 		}else {
 			c[num - 1]->level = 4;
 		}
+		printf("> Channel info. is modified.\n");
 	}
-	printf("> Channel info. is modified.\n");
+	
 }
 
 int deleteChannel(struct st_channel* c[], int size){
@@ -312,6 +313,8 @@ int deleteChannel(struct st_channel* c[], int size){
 void makeReport(struct st_channel* c[], int size){
 	FILE *fp = NULL;
 	fp = fopen("report.txt", "w");
+	printf("> All information of channels are saved into channels.txt\n");
+	printf("> Channel Statistics are saved into report.txt\n");
 
 	fprintf(fp, "Channel List\n");
 	for (int i = 0; i < size; i++){
