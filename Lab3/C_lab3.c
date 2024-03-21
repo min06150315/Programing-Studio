@@ -166,7 +166,6 @@ void printStatistics(struct st_channel* c[], int size){
             }
         }
     }
-    
     // print the average and top channel
     for (int i = 0; i < 5; i++){
         sub_avg[i] = (float)sub_sum[i] / count[i];
@@ -179,6 +178,7 @@ void pickupRandomChannels(struct st_channel* c[], int size){
 	int r;
 	srand(time(NULL));
 	printf("> Pick up Channels\n");
+
 	// User input
 	printf("> How much channels you want to pick up? > ");
 	scanf("%d", &count);
@@ -196,9 +196,11 @@ void searchChannel(struct st_channel* c[], int size){
 	char c_name[64];
 	int count = 0;
 	printf("> Search Channels\n");
+
 	// User input
 	printf("> Choose one (1:by peoples 2:by names) > ");
 	scanf("%d", &menu);
+
 	// Input system
 	while(1){
 		if (menu == 1){ // Searching by people
@@ -223,8 +225,8 @@ void searchChannel(struct st_channel* c[], int size){
 			// User input
 			printf("> Enter a names > ");
 			scanf("%s", c_name);
-
 			count = 0;
+
 			// Searcing system
 			printf("> Result:\n");
 			for (int i = 0; i < size; i++){
@@ -246,6 +248,7 @@ void updateChannel(struct st_channel* c[], int size){
 	char new_name[64];
 	int new_count;
 	printf("> Modify a new Channel\n");
+
 	// User input
 	printf("> Enter a number of channel > ");
 	scanf("%d", &num);
@@ -255,6 +258,7 @@ void updateChannel(struct st_channel* c[], int size){
 	}else {
 		printf("> Channel Info.\n");
 		printf("[%2d] %-20s %10d peoples [%s] \n", num, c[num - 1]->name, c[num - 1]->count,LNAME[c[num - 1]->level]);
+
 		// User input
 		//	Modify the name of channel
 		printf("> Enter a new name of channel > ");
@@ -285,6 +289,7 @@ void updateChannel(struct st_channel* c[], int size){
 int deleteChannel(struct st_channel* c[], int size){
 	int no, yesno;
 	printf("> Delete a new Channel\n");
+
 	// User input
 	printf("> Enter a number of channel > ");
 	scanf("%d", &no);
@@ -299,6 +304,7 @@ int deleteChannel(struct st_channel* c[], int size){
 		scanf("%d", &yesno);
 		if (yesno == 1){
 			printf("> Channel is deleted.\n");
+
 			// change the result
 			strcpy(c[no - 1]->name, c[size - 1]->name);
 			c[no - 1]->count = c[size - 1]->count;
@@ -370,6 +376,7 @@ void makeReport(struct st_channel* c[], int size){
             }
         }
     }
+	
 	// Write channel statistics
 	for (int i = 0; i < 5; i++){
 			sub_avg[i] = (float)sub_sum[i] / count[i];
