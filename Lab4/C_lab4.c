@@ -8,6 +8,16 @@
 #include <string.h>
 #include <time.h>
 
+
+typedef struct{
+    char name[64];
+    int level;
+    int exp[100];
+    int grade; // 1 ~ 5 grades
+    int noJob; // 1 ~ 10 jobs
+} Student;
+
+
 int main()
 {
 
