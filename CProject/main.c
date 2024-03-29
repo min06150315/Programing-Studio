@@ -18,6 +18,7 @@ int main()
     printf("> Enter the player's name: ");
     scanf("%s", player[count]->name);
     count++;
+    player[count]->level = 0;
     player[count]->level = 1;
     player[count]->noJob = 0;
 

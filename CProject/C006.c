@@ -157,6 +157,9 @@ void gotoShop(struct Player* p[], int num)
 {
     // 플레이어 지갑 상태 보여주기
 
+    // 상점 품목 목록
+
+    // 
     
 }
 
@@ -215,7 +218,11 @@ void moveMap(struct Map* m[], int msize)
 // 사냥 기능
 void Hunt(struct Player* p[], int num)
 {
-
+    printf("Found a monster in the wild!!\n");
+    printf("You Defeated it.\n");
+    printf("You got 500 GOLD and 10 experience points and went up 1 level");
+    p[num]->money += 500;
+    p[num]->level++;
 }
 
 // 보스전 기능
