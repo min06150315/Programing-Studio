@@ -4,7 +4,6 @@
 #include <time.h>
 #include "C006.h"
 
-
 // 플레이어 목록 출력
 void printPlayer(struct Player* p[], int psize)
 {
