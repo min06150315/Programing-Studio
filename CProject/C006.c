@@ -156,9 +156,12 @@ void gotoAdventure(struct Player* p[], int num, struct Map* m[])
 void gotoShop(struct Player* p[], int num)
 {
     // 플레이어 지갑 상태 보여주기
-
+    printf("> Player Wallet >\n");
+    printf("> %s has %d GOLD.\n", p[num]->name, p[num]->money);
+    
     // 상점 품목 목록
-
+    printf("> Shop >\n");
+    
     // 
     
 }
@@ -218,9 +221,10 @@ void moveMap(struct Map* m[], int msize)
 // 사냥 기능
 void Hunt(struct Player* p[], int num)
 {
-    printf("Found a monster in the wild!!\n");
-    printf("You Defeated it.\n");
-    printf("You got 500 GOLD and 10 experience points and went up 1 level");
+    // 게임속 재화 습득 및 레벨 상승
+    printf("> Found a monster in the wild!!\n");
+    printf("> You Defeated it.\n");
+    printf("> You got 500 GOLD and 10 experience points and went up 1 level\n");
     p[num]->money += 500;
     p[num]->level++;
 }
@@ -228,5 +232,37 @@ void Hunt(struct Player* p[], int num)
 // 보스전 기능
 void fightBoss(struct Player* p[], int num)
 {
-    
+    char BOSS[5][20] = {"Demien", "Lucid", "Kalos", "Darknell", "Black Mage"};
+    int menu;
+    int bossLv[5];
+    int reward[5];
+
+    // 보스 리스트
+    printf("> BOSS List >\n");
+    for (int i = 0; i < 5; i++){
+        bossLv[i] = (i + 1) * 10;
+        reward[i] = (i + 1) * 5000;
+        printf("[%d] %s (Lv.%d)\n", i + 1, BOSS[i], bossLv[i]);
+    }
+    // 원하는 보스 입력
+    printf(">> Enter the BOSS > ");
+    scanf("%d", &menu);
+
+    // 보스 입장
+    printf("> You cam to %s's residence.\n", BOSS[menu - 1]);
+
+    // 플레이어 레벨이 보스 레벨 보다 높을시 승리
+    if (p[num]->level >= bossLv[menu - 1]){  // 승리시
+        printf("> You defeated the evil %s.\n", BOSS[menu - 1]);
+        printf("> Player %s was won and got %d GOLD.\n", p[num]->name, reward[menu]);
+        p[num]->money += reward[menu];
+    }else {  // 패배시
+        printf("> The evil %s gave you a final blow.\n", BOSS[menu - 1]);
+        printf("> You lost your mind and lost %d GOLD.\n", reward[menu] / 2);
+        if (p[num]->money >= reward[menu] / 2){
+            p[num]->money -= reward[menu] / 2;
+        }else {
+            p[num]->money = 0;
+        }
+    }
 }
