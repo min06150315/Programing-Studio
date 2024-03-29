@@ -59,13 +59,23 @@ void searchPlayer(struct Player* p[], int psize)
 // 플레이어 삭제
 int deletePlayer(struct Player* p[], int psize)
 {
-    int no;
+    int no, yesno;
     printf(">> Enter a number of player >");
     scanf("%d", &no);
     if (no > psize){
         printf("> Error! Wrong number.\n");
     }else {
-        prntf("> Player Info.\n")
+        printf("> Player Info.\n");
+        printf("[%d] %s", no, p[no -1]->name);
+
+        printf(">> Really Delete? (1:Yes 0:No) >");
+        scanf("%d", &yesno);
+        if (yesno == 1){
+            strcpy(p[no - 1]->name, p[psize - 1]->name);
+            psize = psize - 1;
+        }else if (yesno == 0){
+            printf("> Delete Canceled.\n");
+        }
     }
     return psize;
 }
@@ -73,7 +83,15 @@ int deletePlayer(struct Player* p[], int psize)
 // 플레이어 목록을 txt파일로 저장하기
 void savePlayer(struct Player* p[], int psize)
 {
+    FILE* fp = NULL;
+    fp = fopen("report.txt", "w");
+    printf("> All information of players are saved.\n");
 
+    fprintf(fp, "Player List\n");
+    for (int i = 0; i < psize; i++){
+        fprintf(fp, "[%d] %s (%s)- Lv.%d - Money: %d -  Grade: %s\n", i + 1, p[i]->name, JNAME[p[i]->noJob], p[i]->level, p[i]->money, GNAME[p[i]->grade]);
+    }
+    fclose(fp);
 }
 
 // 게임 시작 함수

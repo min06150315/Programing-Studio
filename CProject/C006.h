@@ -18,6 +18,8 @@ struct Map{
 
 // 직업 종류
 char JNAME[5][20] = {"Warrior", "Wizard", "Archer", "Assasian", "Pirate"};
+// 등급 종류
+char GNAME[5][20] = {"Bronze", "Silver", "Gold", "Platinum", "Diamond"};
 
 void printPlayer(struct Player* p[], int psize);
 int addPlayer(struct Player* p[], int psize);
