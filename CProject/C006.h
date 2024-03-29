@@ -29,7 +29,6 @@ void savePlayer(struct Player* p[], int psize);
 
 void startGame(struct Player* p[], int psize, struct Map* m[]);
 void gotoAdventure(struct Player* p[], int num, struct Map* m[]);
-void Move(struct Player* p[], int num);
 int changePlayer(struct Player* p[], int psize);
 int loadMap(struct Map* m[]);
 void moveMap(struct Map* m[], int msize);

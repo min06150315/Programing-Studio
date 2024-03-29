@@ -106,15 +106,16 @@ void startGame(struct Player* p[], int psize, struct Map* m[])
     int menu;
     while (1){
         printf("> Hello, World! %s\n", p[no]->name);
-        printf("> Menu 1.Adventure 2.Move 3.Rest 4.Shop 5.Change Player 0.Quit\n");
+        printf("> Menu 1.Adventure 2.Move Vilage 3.Rest 4.Shop 5.Change Player 0.Quit\n");
         scanf("%d", &menu);
 
         if (menu == 1){
             printf("> 1.Adventure\n");
             gotoAdventure(p, no, m);
         }else if (menu == 2){
-            printf("> 2.Move\n");
-            Move(p, no);
+            printf("> 2.Move Vilage\n");
+            printf("Welcome to HGU Vilage!!\n");
+            printf("Jesus always loves us.\n");
         }else if (menu == 3){
             printf("> 3.Rest\n");
             printf("> Player %s [%s]recovered with a break", p[no]->name, JNAME[p[no]->noJob]);
@@ -151,15 +152,11 @@ void gotoAdventure(struct Player* p[], int num, struct Map* m[])
     }
 }
 
-// 이동하기
-void Move(struct Player* p[], int num)
-{
-
-}
-
 // 상점기능
 void gotoShop(struct Player* p[], int num)
 {
+    // 플레이어 지갑 상태 보여주기
+
     
 }
 
@@ -178,7 +175,6 @@ int changePlayer(struct Player* p[], int psize)
     // 플레이어 넘버 선택
     printf("> [%d] %s was selected.\n", menu, p[menu]->name);
     return menu;
-
 }
 
 // txt파일에 있는 맵 목록을 불러오기
