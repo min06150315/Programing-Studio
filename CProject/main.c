@@ -13,8 +13,11 @@ int main()
     int no;
     int count = 0;
     struct Player* player[50];
-    printf("> Create the player >\n>> Enter the player's name: ");
+    printf(">> INSERT COIN >>\n");
+    printf("> Enter the player's name: ");
     scanf("%s", player[count]->name);
+    count++;
+    player[count]->noJob = 0;
     printf("> Welcome to the My world %s!!\n", player[count]->name);
 
     while (1){
@@ -35,7 +38,7 @@ int main()
             printf("> 4.Delete Player\n");
             count = deletePlayer(player, count);
         }else if (no == 5){
-            pritnf("> 5. Let's go to the Adventure\n");
+            printf("> 5. Let's go to the Adventure\n");
             Adventure(player, count);
         }else if (no == 6){
             printf("> 6. Save\n");
