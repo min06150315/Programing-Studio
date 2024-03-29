@@ -8,8 +8,6 @@ struct Player{
     int grade; // 1 ~ 5 grades
     int noJob; // 1 ~ 10 jobs
 };
-char GNAME[5][20] = {"Bronze", "Silver", "Gold", "Platinum", "Diamond"};
-char JNAME[5][20] = {"Warrior", "Wizard", "Archer", "Assasian", "Pirate"};
 
 void printPlayer(struct Player* p[], int psize);
 int addPlayer(struct Player* p[], int psize);
