@@ -16,10 +16,7 @@ struct Map{
     char mname[64]; // map name
 };
 
-// 직업 종류
-char JNAME[5][20] = {"Warrior", "Wizard", "Archer", "Assasian", "Pirate"};
-// 등급 종류
-char GNAME[5][20] = {"Bronze", "Silver", "Gold", "Platinum", "Diamond"};
+
 
 void printPlayer(struct Player* p[], int psize);
 int addPlayer(struct Player* p[], int psize);
@@ -29,6 +26,7 @@ void savePlayer(struct Player* p[], int psize);
 
 void startGame(struct Player* p[], int psize, struct Map* m[]);
 void gotoAdventure(struct Player* p[], int num, struct Map* m[]);
+void gotoShop(struct Player* p[], int num);
 int changePlayer(struct Player* p[], int psize);
 int loadMap(struct Map* m[]);
 void moveMap(struct Map* m[], int msize);

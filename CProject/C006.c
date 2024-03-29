@@ -4,6 +4,11 @@
 #include <time.h>
 #include "C006.h"
 
+// 직업 종류
+char JNAME[5][20] = {"Warrior", "Wizard", "Archer", "Assassin", "Pirate"};
+// 등급 종류
+char GNAME[5][20] = {"Bronze", "Silver", "Gold", "Platinum", "Diamond"};
+
 // 플레이어 목록 출력
 void printPlayer(struct Player* p[], int psize)
 {
@@ -141,7 +146,7 @@ void gotoAdventure(struct Player* p[], int num, struct Map* m[])
         if (menu == 1){
             moveMap(m, count);
         }else if (menu == 2){
-            gotoHunt(p, num);
+            Hunt(p, num);
         }else if (menu == 3){
             fightBoss(p, num);
         }else if (menu == 4){
@@ -154,15 +159,59 @@ void gotoAdventure(struct Player* p[], int num, struct Map* m[])
 // 상점기능
 void gotoShop(struct Player* p[], int num)
 {
+    int menu;
+    int yesno;
     // 플레이어 지갑 상태 보여주기
     printf("> Player Wallet >\n");
     printf("> %s has %d GOLD.\n", p[num]->name, p[num]->money);
     
-    // 상점 품목 목록
-    printf("> Shop >\n");
+    // 상점 품목 목록과 상품 구매
+    printf("> Shop Item>\n");
+    while (1){
+        printf("> 1.Blue Portion (100 GOLD) 2.Red Portion (200 GOLD) 3.White Portion (300 GOLD)\n> 4.EXP Coupon (1000 GOLD) 5.Donate 0.Quit >");
+        scanf("%d", &menu);
     
-    // 
-    
+        // 구매 문구
+        if (menu == 1){
+            printf("> You purchase Blue Portion.\n> It can help your Intelligence.\n");
+            if (p[num]->money >= 100){
+                p[num]->money -= 100;
+                printf("> Purchase successfully\n");
+            }else{
+                printf("> No enough money!!\n");
+            }
+        }else if (menu == 2){
+            printf("> You purchase Red Portion.\n> It can help your Strength.\n");
+            if (p[num]->money >= 200){
+                p[num]->money -= 200;
+                printf("> Purchase successfully\n");
+            }else{
+                printf("> No enough money!!\n");
+            }
+        }else if (menu == 3){
+            printf("> You purchase White Portion.\n> It is of great benefit to your adventure.\n");
+            if (p[num]->money >= 300){
+                p[num]->money -= 300;
+                printf("> Purchase successfully\n");
+            }else{
+                printf("> No enough money!!\n");
+            }
+        }else if (menu == 4){
+            printf("> You purchase EXP Coupon.\n> You're level 1 up.\n");
+            if (p[num]->money >= 1000){
+                p[num]->money -= 1000;
+                printf("> Purchase successfully\n");
+                p[num]->level++;
+                printf("[Level Up] Lv.%d -> Lv.%d\n", p[num]->level - 1, p[num]->level);
+            }else{
+                printf("> No enough money!!\n");
+            }
+        }else if (menu == 5){
+            printf("> You select the Donate.\n>Thank you for your service.\n");
+        }else {
+            break;
+        }
+    }
 }
 
 // 플레이어 변경
