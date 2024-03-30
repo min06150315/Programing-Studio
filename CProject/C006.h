@@ -16,8 +16,6 @@ struct Map{
     char mname[64]; // map name
 };
 
-
-
 void printPlayer(struct Player* p[], int psize);
 int addPlayer(struct Player* p[], int psize);
 void searchPlayer(struct Player* p[], int psize);

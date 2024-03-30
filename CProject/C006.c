@@ -13,7 +13,7 @@ char GNAME[5][20] = {"Bronze", "Silver", "Gold", "Platinum", "Diamond"};
 void printPlayer(struct Player* p[], int psize)
 {
     for (int i = 0; i < psize; i++){
-        printf("[%d] %s [%s]\n", i + 1, p[i]->name, JNAME[p[i]->noJob]);
+        printf("[%d] %s [%s] [Lv.%d] [%d GOLD]\n", i + 1, p[i]->name, JNAME[p[i]->noJob], p[i]->level, p[i]->money);
     }
 }
 
@@ -28,17 +28,26 @@ int addPlayer(struct Player* p[], int psize)
     scanf("%s", s->name);
 
     // 직업 종류를 보여주고 유저에게 새로운 플레이어의 직업 입력받기
-    printf("> Job List >");
+    printf("> Job List >\n");
     for (int i = 0; i < 5; i++){
-        printf("[%d] %s\t", i + 1, JNAME[i]);
+        printf("[%d] %s  ", i + 1, JNAME[i]);
     }
-    int menu;
-    printf(">> Enter the Player's Job (1 ~ 5) > ");
-    scanf("%d", &menu);
-    s->noJob = menu;
 
-    p[psize] = s;
-    return psize + 1;
+    int job;
+    printf("\n>> Enter the Player's Job (1 ~ 5) > ");
+    scanf("%d", &job);
+    if (job == 1 || job == 2 || job == 3 || job == 4 || job == 5){
+        s->noJob = job - 1;
+        s->level = 1;
+        s->money = 0;
+
+        p[psize] = s;
+        psize++;
+    }else {
+        printf("Error!! Wrong Number.\n");
+    }
+    
+    return psize;
 }
 
 // 이름으로 플레이어 찾기
@@ -47,13 +56,13 @@ void searchPlayer(struct Player* p[], int psize)
     int count = 0;
     char name[64];
 
-    printf(">> Enter the player name > ");
+    printf(">> Enter the player name keyword > ");
     scanf("%s", name);
 
     printf("> Searching (keyword : %s)\n", name);
     for (int i = 0; i < psize; i++){
         if (strstr(p[i]->name, name)){
-            printf("[%d] %s [%s]\n", i + 1, p[i]->name, JNAME[p[i]->noJob]);
+            printf("[%d] %s [%s] [Lv.%d] [%d GOLD]\n", i + 1, p[i]->name, JNAME[p[i]->noJob], p[i]->level, p[i]->money);
             count++;
         }
     }
@@ -64,19 +73,24 @@ void searchPlayer(struct Player* p[], int psize)
 int deletePlayer(struct Player* p[], int psize)
 {
     int no, yesno;
-    printf(">> Enter a number of player >");
+    printf(">> Enter a number of player > ");
     scanf("%d", &no);
-    if (no > psize){
-        printf("> Error! Wrong number.\n");
+    if (no > psize || no < 1){
+        printf("> Error!! Wrong Number.\n");
     }else {
         printf("> Player Info.\n");
-        printf("[%d] %s", no, p[no -1]->name);
-
-        printf(">> Really Delete? (1:Yes 0:No) >");
+        printf("[%d] %s [%s] [Lv.%d] [%d GOLD]\n", no, p[no - 1]->name, JNAME[p[no - 1]->noJob], p[no - 1]->level, p[no - 1]->money);
+        printf(">> Really Delete? (1:Yes 0:No) > ");
         scanf("%d", &yesno);
         if (yesno == 1){
             strcpy(p[no - 1]->name, p[psize - 1]->name);
+            p[no - 1]->noJob = p[psize - 1]->noJob;
+            p[no - 1]->money = p[psize - 1]->money;
+            p[no - 1]->grade = p[psize - 1]->grade;
+            p[no - 1]->level = p[psize - 1]->level;
+
             psize = psize - 1;
+            printf("> Delete Complete.\n");
         }else if (yesno == 0){
             printf("> Delete Canceled.\n");
         }
@@ -93,7 +107,7 @@ void savePlayer(struct Player* p[], int psize)
 
     fprintf(fp, "Player List\n");
     for (int i = 0; i < psize; i++){
-        fprintf(fp, "[%d] %s (%s)- Lv.%d - Money: %d -  Grade: %s\n", i + 1, p[i]->name, JNAME[p[i]->noJob], p[i]->level, p[i]->money, GNAME[p[i]->grade]);
+        fprintf(fp, "[%d] %s [%s] [Lv.%d] [%d GOLD]\n", i + 1, p[i]->name, JNAME[p[i]->noJob], p[i]->level, p[i]->money);
     }
     fclose(fp);
 }
@@ -105,29 +119,37 @@ void startGame(struct Player* p[], int psize, struct Map* m[])
     printf("> Player List\n");
     printPlayer(p, psize);
     printf(">> Select the player > ");
-    scanf("%d", no);
-
+    scanf("%d", &no);
+    if (no > psize || no < 1){
+        printf("Error!! Wrong Number.\n");
+        exit(-1);
+    }
+    printf("> Hello, World! %s\n", p[no - 1]->name);
     int menu;
     while (1){
-        printf("> Hello, World! %s\n", p[no]->name);
-        printf("> Menu 1.Adventure 2.Move Vilage 3.Rest 4.Shop 5.Change Player 0.Quit\n");
+        printf("\n> Menu 1.Player Status 2.Adventure 3.Visit Vilage 4.Rest 5.Shop 6.Change Player 0.Main Menu\n");
+        printf(">> Menu? >> ");
         scanf("%d", &menu);
 
         if (menu == 1){
-            printf("> 1.Adventure\n");
-            gotoAdventure(p, no, m);
+            printf("> 1.Player Status\n");
+            printf("%s [%s] [Lv.%d] [%d GOLD]\n", p[no - 1]->name, JNAME[p[no - 1]->noJob], p[no - 1]->level, p[no - 1]->money);
         }else if (menu == 2){
-            printf("> 2.Move Vilage\n");
+            printf("> 2.Adventure\n");
+            gotoAdventure(p, no, m);
+        }else if (menu == 3){
+            printf("> 3.Move Vilage\n");
             printf("Welcome to HGU Vilage!!\n");
             printf("Jesus always loves us.\n");
-        }else if (menu == 3){
-            printf("> 3.Rest\n");
-            printf("> Player %s [%s]recovered with a break", p[no]->name, JNAME[p[no]->noJob]);
         }else if (menu == 4){
-            printf("> 4.Shop\n");
-            gotoShop(p, no);
+            printf("> 4.Rest\n");
+            printf("Player %s take some rest.\n", p[no - 1]->name);
+            printf("Player recovered and became claer.\n");
         }else if (menu == 5){
-            printf("> 5.Change Player\n");
+            printf("> 5.Shop\n");
+            gotoShop(p, no);
+        }else if (menu == 6){
+            printf("> 6.Change Player\n");
             no = changePlayer(p, psize);
         }else {
             break;
@@ -141,7 +163,8 @@ void gotoAdventure(struct Player* p[], int num, struct Map* m[])
     int count = loadMap(m);
     int menu;
     while (1){
-        printf("> Menu 1.Move 2.Hunting 3.BOSS 4.Back\n");
+        printf("\n> Menu 1.Move Map 2.Hunting 3.BOSS 4.Back\n");
+        printf(">> Menu? >> ");
         scanf("%d", &menu);
         if (menu == 1){
             moveMap(m, count);
@@ -150,7 +173,7 @@ void gotoAdventure(struct Player* p[], int num, struct Map* m[])
         }else if (menu == 3){
             fightBoss(p, num);
         }else if (menu == 4){
-            printf("%s [%s] is came back", p[num]->name, JNAME[p[num]->noJob]);
+            printf("Player %s is came back", p[num - 1]->name);
             break;
         }
     }
@@ -163,51 +186,55 @@ void gotoShop(struct Player* p[], int num)
     int yesno;
     // 플레이어 지갑 상태 보여주기
     printf("> Player Wallet >\n");
-    printf("> %s has %d GOLD.\n", p[num]->name, p[num]->money);
+    printf("> %s has %d GOLD.\n", p[num - 1]->name, p[num - 1]->money);
     
     // 상점 품목 목록과 상품 구매
-    printf("> Shop Item>\n");
+    
     while (1){
-        printf("> 1.Blue Portion (100 GOLD) 2.Red Portion (200 GOLD) 3.White Portion (300 GOLD)\n> 4.EXP Coupon (1000 GOLD) 5.Donate 0.Quit >");
+        printf("\n> Shop Item>\n");
+        printf("> [1] Blue Portion (100 GOLD) [2] Red Portion (200 GOLD) [3] White Portion (300 GOLD)\n> [4] EXP Coupon (1000 GOLD) [5] Donate [0] Back > ");
         scanf("%d", &menu);
     
         // 구매 문구
         if (menu == 1){
-            printf("> You purchase Blue Portion.\n> It can help your Intelligence.\n");
-            if (p[num]->money >= 100){
-                p[num]->money -= 100;
+            if (p[num - 1]->money >= 100){
+                p[num - 1]->money -= 100;
                 printf("> Purchase successfully\n");
+                printf("You purchase Blue Portion.\nIt can help your Intelligence.\n");
             }else{
                 printf("> No enough money!!\n");
             }
         }else if (menu == 2){
-            printf("> You purchase Red Portion.\n> It can help your Strength.\n");
-            if (p[num]->money >= 200){
-                p[num]->money -= 200;
+            if (p[num - 1]->money >= 200){
+                p[num - 1]->money -= 200;
                 printf("> Purchase successfully\n");
+                printf("You purchase Red Portion.\nIt can help your Strength.\n");
+
             }else{
                 printf("> No enough money!!\n");
             }
         }else if (menu == 3){
-            printf("> You purchase White Portion.\n> It is of great benefit to your adventure.\n");
-            if (p[num]->money >= 300){
-                p[num]->money -= 300;
+            if (p[num - 1]->money >= 300){
+                p[num - 1]->money -= 300;
                 printf("> Purchase successfully\n");
+                printf("You purchase White Portion.\nIt is of great benefit to your adventure.\n");
             }else{
-                printf("> No enough money!!\n");
+                printf("No enough money!!\n");
             }
         }else if (menu == 4){
-            printf("> You purchase EXP Coupon.\n> You're level 1 up.\n");
-            if (p[num]->money >= 1000){
-                p[num]->money -= 1000;
+            if (p[num - 1]->money >= 1000){
+                p[num - 1]->money -= 1000;
                 printf("> Purchase successfully\n");
-                p[num]->level++;
-                printf("[Level Up] Lv.%d -> Lv.%d\n", p[num]->level - 1, p[num]->level);
+                printf("You purchase EXP Coupon.\nYou're level 1 up.\n");
+                p[num - 1]->level++;
+                printf("[Level Up] Lv.%d -> Lv.%d\n", p[num - 1]->level - 1, p[num - 1]->level);
             }else{
-                printf("> No enough money!!\n");
+                printf("No enough money!!\n");
             }
         }else if (menu == 5){
-            printf("> You select the Donate.\n>Thank you for your service.\n");
+            printf("You select the Donate.\nThank you for your service.\n");
+            printf("All your money was donated to Handong.\n");
+            p[num - 1]->money = 0;
         }else {
             break;
         }
@@ -227,7 +254,7 @@ int changePlayer(struct Player* p[], int psize)
     scanf("%d", &menu);
 
     // 플레이어 넘버 선택
-    printf("> [%d] %s was selected.\n", menu, p[menu]->name);
+    printf("> [%d] %s was selected.\n", menu, p[menu - 1]->name);
     return menu;
 }
 
@@ -262,7 +289,7 @@ void moveMap(struct Map* m[], int msize)
     scanf("%d", &menu);
 
     // 맵으로 이동하는 문구 출력
-    printf("> %s\n", m[menu - 1]->mname);
+    printf("You arrived at the %s.\n", m[menu - 1]->mname);
 
 }
 
@@ -273,8 +300,8 @@ void Hunt(struct Player* p[], int num)
     printf("> Found a monster in the wild!!\n");
     printf("> You Defeated it.\n");
     printf("> You got 500 GOLD and 10 experience points and went up 1 level\n");
-    p[num]->money += 500;
-    p[num]->level++;
+    p[num - 1]->money += 500;
+    p[num - 1]->level++;
 }
 
 // 보스전 기능
@@ -293,24 +320,24 @@ void fightBoss(struct Player* p[], int num)
         printf("[%d] %s (Lv.%d)\n", i + 1, BOSS[i], bossLv[i]);
     }
     // 원하는 보스 입력
-    printf(">> Enter the BOSS > ");
+    printf(">> Enter the BOSS Number > ");
     scanf("%d", &menu);
 
     // 보스 입장
-    printf("> You cam to %s's residence.\n", BOSS[menu - 1]);
+    printf("> You came to %s's residence.\n", BOSS[menu - 1]);
 
     // 플레이어 레벨이 보스 레벨 보다 높을시 승리
-    if (p[num]->level >= bossLv[menu - 1]){  // 승리시
+    if (p[num - 1]->level >= bossLv[menu - 1]){  // 승리시
         printf("> You defeated the evil %s.\n", BOSS[menu - 1]);
-        printf("> Player %s was won and got %d GOLD.\n", p[num]->name, reward[menu]);
-        p[num]->money += reward[menu];
+        printf("> Player %s was won and got %d GOLD.\n", p[num - 1]->name, reward[menu - 1]);
+        p[num - 1]->money += reward[menu - 1];
     }else {  // 패배시
         printf("> The evil %s gave you a final blow.\n", BOSS[menu - 1]);
-        printf("> You lost your mind and lost %d GOLD.\n", reward[menu] / 2);
-        if (p[num]->money >= reward[menu] / 2){
-            p[num]->money -= reward[menu] / 2;
+        printf("> You lost your mind and lost %d GOLD.\n", reward[menu - 1] / 2);
+        if (p[num - 1]->money >= reward[menu - 1] / 2){
+            p[num - 1]->money -= reward[menu - 1] / 2;
         }else {
-            p[num]->money = 0;
+            p[num - 1]->money = 0;
         }
     }
 }
